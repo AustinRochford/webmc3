@@ -1,4 +1,5 @@
 import dash_core_components as dcc
+import dash_html_components as html
 from plotly import graph_objs as go
 
 import numpy as np
@@ -48,15 +49,21 @@ def var_lines_figure(trace, varname):
     }
 
 
-def var_selector(trace, varname0):
-    return dcc.Dropdown(
-        id='var-selector',
-        options=[
-            {
-                'label': varname,
-                'value': varname
-            }
-            for varname in trace.varnames
+def var_selector(trace, varname):
+    return html.Div(
+        [
+            html.Label("Variable"),
+            dcc.Dropdown(
+                id='var-selector',
+                value=varname,
+                options=[
+                    {
+                        'label': varname,
+                        'value': varname
+                    }
+                    for varname in trace.varnames
+                ]
+            )
         ],
-        value=varname0
+        style={'width': '20%'}
     )

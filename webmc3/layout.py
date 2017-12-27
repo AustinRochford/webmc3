@@ -13,7 +13,8 @@ LOGO = html.Img(
 @decorator
 def with_header(layout_func, *args, **kwargs):
     return html.Div([
-        LOGO, layout_func(*args, **kwargs)
+        LOGO, html.Hr(),
+        layout_func(*args, **kwargs)
     ])
 
 
