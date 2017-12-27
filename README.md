@@ -1,5 +1,5 @@
 # webmc3
-A web interface for exploring [PyMC3](https://github.com/pymc-devs/pymc3) traces, built with [Dash](https://github.com/plotly/dash).
+A web interface for exploring [PyMC3](https://github.com/pymc-devs/pymc3) traces, inspired by [ShinyStan](https://github.com/stan-dev/shinystan) and built with [Dash](https://github.com/plotly/dash).
 
 ![webmc3 demo](/docs/demo.gif)
 
