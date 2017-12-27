@@ -1,8 +1,40 @@
+from __future__ import division
+
 import dash_core_components as dcc
 import dash_html_components as html
 from plotly import graph_objs as go
 
 import numpy as np
+
+from .stats import autocorr
+
+
+def var_autocorr(trace, varname):
+    return dcc.Graph(
+        id='var-autocorr',
+        figure=var_autocorr_figure(trace, varname)
+    )
+
+
+def var_autocorr_figure(trace, varname):
+    x = np.arange(len(trace))
+
+    return {
+        'data': [
+            go.Bar(
+                x=x + chain_ix / trace.nchains,
+                y=chain_autocorr,
+                name="Chain {}".format(chain_ix),
+                marker={'line': {'width': 1. / trace.nchains}}
+            )
+            for chain_ix, chain_autocorr in enumerate(autocorr(trace, varname))
+        ],
+        'layout': go.Layout(
+            xaxis={'title': "Lag"},
+            yaxis={'title': "Sample autocorrelation"},
+            showlegend=False
+        )
+    }
 
 
 def var_hist(trace, varname):
@@ -18,7 +50,6 @@ def var_hist_figure(trace, varname):
             go.Histogram(x=trace[varname])
         ],
         'layout': go.Layout(
-            title=varname,
             yaxis={'title': "Frequency"}
         )
     }
@@ -43,8 +74,8 @@ def var_lines_figure(trace, varname):
             for chain_ix, y in enumerate(trace.get_values(varname, combine=False))
         ],
         'layout': go.Layout(
-            title=varname,
-            yaxis={'title': "Sample value"}
+            yaxis={'title': "Sample value"},
+            showlegend=False
         )
     }
 

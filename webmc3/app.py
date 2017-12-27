@@ -10,6 +10,13 @@ def webmc3_app(trace):
     app.layout = var_layout(trace)
 
     @app.callback(
+        dash.dependencies.Output('var-autocorr', 'figure'),
+        [dash.dependencies.Input('var-selector', 'value')]
+    )
+    def update_var_hist(varname):
+        return var_autocorr_figure(trace, varname)
+
+    @app.callback(
         dash.dependencies.Output('var-hist', 'figure'),
         [dash.dependencies.Input('var-selector', 'value')]
     )

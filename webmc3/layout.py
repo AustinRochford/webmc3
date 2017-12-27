@@ -33,5 +33,9 @@ def var_table(trace, varname):
         html.Tr([
             html.Td([var_hist(trace, varname)]),
             html.Td([var_lines(trace, varname)])
+        ]),
+        html.Tr([
+            html.Td([]),
+            html.Td([var_autocorr(trace, varname)])
         ])
     ])
