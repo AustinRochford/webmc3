@@ -1,13 +1,13 @@
 import dash
 
 from .components import *
-from .layout import get_var_layout
+from .layout import var_layout
 
 
 def webmc3_app(trace):
     app = dash.Dash() 
     app.title = "webmc3"
-    app.layout = get_var_layout(trace)
+    app.layout = var_layout(trace)
 
     @app.callback(
         dash.dependencies.Output('var-hist', 'figure'),
