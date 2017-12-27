@@ -3,6 +3,8 @@ A web interface for exploring [PyMC3](https://github.com/pymc-devs/pymc3) traces
 
 ![webmc3 demo](/docs/demo.gif)
 
+Consult the [quickstart notebook](/docs/notebooks/Quickstart.ipynb) to start using `webmc3`.
+
 ## Development
 
 The simplest way to develop `webmc3` is to use the [Dockerfile](/Dockerfile).
