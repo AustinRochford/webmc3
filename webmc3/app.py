@@ -5,6 +5,9 @@ from .layout import var_layout
 
 
 def webmc3_app(trace):
+    """
+    Generate a Dash/Flask app to visualize the given trace
+    """
     app = dash.Dash() 
     app.title = "webmc3"
     app.layout = var_layout(trace)
