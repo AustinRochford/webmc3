@@ -76,10 +76,12 @@ def var_autocorr_figure(trace, varname):
 
 
 def var_effective_n(trace, varname):
-    return html.P(
-        id='var-effective-n',
-        children=u"Effective sample size = {}".format(effective_n(trace, varname))
-    )
+    try:
+        text = "Effective sample size = {}".format(effective_n(trace, varname))
+    except KeyError:
+        text = "Effective sample size not found"
+
+    return html.P(id='var-effective-n', children=text)
     
 
 def var_gelman_rubin(trace, varname):
