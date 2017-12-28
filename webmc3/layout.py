@@ -35,7 +35,10 @@ def var_table(trace, varname):
             html.Td([var_lines(trace, varname)])
         ]),
         html.Tr([
-            html.Td([]),
+            html.Td([
+                var_gelman_rubin(trace, varname),
+                var_effective_n(trace, varname)
+            ]),
             html.Td([var_autocorr(trace, varname)])
         ])
     ])

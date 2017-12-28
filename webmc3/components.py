@@ -1,12 +1,50 @@
 from __future__ import division
 
+import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from plotly import graph_objs as go
 
 import numpy as np
 
-from .stats import autocorr
+from .stats import *
+
+
+def add_var_callbacks(app, trace):
+    @app.callback(
+        dash.dependencies.Output('var-autocorr', 'figure'),
+        [dash.dependencies.Input('var-selector', 'value')]
+    )
+    def update_var_autocorr(varname):
+        return var_autocorr_figure(trace, varname)
+
+    @app.callback(
+        dash.dependencies.Output('var-effective-n', 'children'),
+        [dash.dependencies.Input('var-selector', 'value')]
+    )
+    def update_var_effective_n(varname):
+        return var_effective_n(trace, varname)
+
+    @app.callback(
+        dash.dependencies.Output('var-gelman-rubin', 'children'),
+        [dash.dependencies.Input('var-selector', 'value')]
+    )
+    def update_var_gelman_rubin(varname):
+        return var_gelman_rubin(trace, varname)
+
+    @app.callback(
+        dash.dependencies.Output('var-hist', 'figure'),
+        [dash.dependencies.Input('var-selector', 'value')]
+    )
+    def update_var_hist(varname):
+        return var_hist_figure(trace, varname)
+
+    @app.callback(
+        dash.dependencies.Output('var-lines', 'figure'),
+        [dash.dependencies.Input('var-selector', 'value')]
+    )
+    def update_var_lines(varname):
+        return var_lines_figure(trace, varname)
 
 
 def var_autocorr(trace, varname):
@@ -35,6 +73,20 @@ def var_autocorr_figure(trace, varname):
             showlegend=False
         )
     }
+
+
+def var_effective_n(trace, varname):
+    return html.P(
+        id='var-effective-n',
+        children=u"Effective sample size = {}".format(effective_n(trace, varname))
+    )
+    
+
+def var_gelman_rubin(trace, varname):
+    return html.P(
+        id='var-gelman-rubin',
+        children=u"Gelman-Rubin R̂ = {:.4f}".format(gelman_rubin(trace, varname))
+    )
 
 
 def var_hist(trace, varname):
