@@ -76,19 +76,24 @@ def var_autocorr_figure(trace, varname):
 
 
 def var_effective_n(trace, varname):
-    try:
-        text = "Effective sample size = {}".format(effective_n(trace, varname))
-    except KeyError:
-        text = "Effective sample size not found"
+    if trace.nchains > 1:
+        try:
+            text = "Effective sample size = {}".format(effective_n(trace, varname))
+        except KeyError:
+            text = "Effective sample size not found"
+    else:
+        text = "Cannot calculate effective sample size"
 
     return html.P(id='var-effective-n', children=text)
     
 
 def var_gelman_rubin(trace, varname):
-    return html.P(
-        id='var-gelman-rubin',
-        children=u"Gelman-Rubin R̂ = {:.4f}".format(gelman_rubin(trace, varname))
-    )
+    if trace.nchains > 1:
+        text = u"Gelman-Rubin R̂ = {:.4f}".format(gelman_rubin(trace, varname))
+    else:
+        text = "Cannot calculate Gelman-Rubin statistic"
+
+    return html.P(id='var-gelman-rubin', children=text) 
 
 
 def var_hist(trace, varname):
@@ -125,7 +130,9 @@ def var_lines_figure(trace, varname):
                 x=x, y=y,
                 name="Chain {}".format(chain_ix)
             )
-            for chain_ix, y in enumerate(trace.get_values(varname, combine=False))
+            for chain_ix, y in enumerate(
+                trace.get_values(varname, combine=False, squeeze=False)
+            )
         ],
         'layout': go.Layout(
             yaxis={'title': "Sample value"},

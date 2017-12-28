@@ -40,5 +40,5 @@ def var_table(trace, varname):
                 var_effective_n(trace, varname)
             ]),
             html.Td([var_autocorr(trace, varname)])
-        ])
+        ]),
     ])
