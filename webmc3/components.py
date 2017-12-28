@@ -82,7 +82,7 @@ def var_effective_n(trace, varname):
         except KeyError:
             text = "Effective sample size not found"
     else:
-        text = "Cannot calculate effective sample size"
+        text = "Cannot calculate effective sample size with only one chain"
 
     return html.P(id='var-effective-n', children=text)
     
@@ -91,7 +91,7 @@ def var_gelman_rubin(trace, varname):
     if trace.nchains > 1:
         text = u"Gelman-Rubin R̂ = {:.4f}".format(gelman_rubin(trace, varname))
     else:
-        text = "Cannot calculate Gelman-Rubin statistic"
+        text = "Cannot calculate Gelman-Rubin statistic with only one chain"
 
     return html.P(id='var-gelman-rubin', children=text) 
 
