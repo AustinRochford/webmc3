@@ -31,8 +31,14 @@ def var_layout(trace):
 def var_table(trace, varname):
     return html.Table([
         html.Tr([
-            html.Td([var_hist(trace, varname)]),
-            html.Td([var_lines(trace, varname)])
+            html.Td(
+                [var_hist(trace, varname)],
+                style={'width': '40%'}
+            ),
+            html.Td(
+                [var_lines(trace, varname)],
+                style={'width': '40%'}
+            )
         ]),
         html.Tr([
             html.Td([
@@ -40,5 +46,6 @@ def var_table(trace, varname):
                 var_effective_n(trace, varname)
             ]),
             html.Td([var_autocorr(trace, varname)])
-        ]),
-    ])
+        ])
+    ],
+    style={'tableLayout': 'fixed'})
