@@ -2,6 +2,7 @@ from decorator import decorator
 
 import dash_html_components as html
 
+from ..common.components import selector
 from .components import *
 
 
@@ -9,7 +10,7 @@ def layout(trace):
     varname = trace.varnames[0]
 
     layout = html.Div([
-        selector(trace, varname),
+        selector('univariate', trace, varname),
         table(trace, varname)
     ])
 

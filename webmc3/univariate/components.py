@@ -8,8 +8,8 @@ from plotly import graph_objs as go
 
 import numpy as np
 
+from ..common.components import add_include_transformed_callback
 from .stats import *
-from ..utils import get_varnames
 
 
 def add_callbacks(app, trace):
@@ -41,25 +41,14 @@ def add_callbacks(app, trace):
     def update_hist(varname):
         return hist_figure(trace, varname)
 
+    add_include_transformed_callback(app, 'univariate', trace)
+
     @app.callback(
         dep.Output('univariate-lines', 'figure'),
         [dep.Input('univariate-selector', 'value')]
     )
     def update_lines(varname):
         return lines_figure(trace, varname)
-
-    @app.callback(
-        dep.Output('univariate-selector', 'options'),
-        [dep.Input(
-            'univariate-selector-include-transformed',
-            'values'
-        )]
-    )
-    def update_selector_transformed(values):
-        return get_varnames(
-            trace,
-            include_transformed=values
-        )
 
 
 def autocorr_graph(trace, varname):
@@ -154,25 +143,3 @@ def lines_figure(trace, varname):
             showlegend=False
         )
     }
-
-
-def selector(trace, varname):
-    return html.Div(
-        [
-            html.Label("Variable"),
-            dcc.Dropdown(
-                id='univariate-selector',
-                options=get_varnames(trace),
-                value=varname
-            ),
-            dcc.Checklist(
-                id='univariate-selector-include-transformed',
-                options=[{
-                    'label': "Include transformed variables",
-                    'value': 'include_transformed'
-                }],
-                values=[]
-            )
-        ],
-        style={'width': '20%'}
-    )
