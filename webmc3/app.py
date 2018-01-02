@@ -1,7 +1,6 @@
 import dash
 
-from .components import *
-from .layout import var_layout
+from . import index
 
 
 def webmc3_app(trace):
@@ -10,8 +9,9 @@ def webmc3_app(trace):
     """
     app = dash.Dash() 
     app.title = "webmc3"
+    app.layout = index.layout(trace)
 
-    app.layout = var_layout(trace)
-    add_var_callbacks(app, trace)
-    
+    app.config.suppress_callback_exceptions = True
+    index.add_callbacks(app, trace)
+
     return app
