@@ -21,9 +21,9 @@ HEADER = html.Div([
                 dcc.Link("Univariate", href='/univariate'),
             ]),
             html.Td([
-                    dcc.Link("Bivariate", href='/bivariate'),
-                ])
-            ]),
+                dcc.Link("Bivariate", href='/bivariate'),
+            ])
+        ]),
     ]),
     html.Hr()
 ])
