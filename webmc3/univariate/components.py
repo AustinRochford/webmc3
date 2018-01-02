@@ -23,14 +23,14 @@ def add_callbacks(app, trace):
         [dash.dependencies.Input('univariate-selector', 'value')]
     )
     def update_effective_n(varname):
-        return effective_n(trace, varname)
+        return effective_n_p(trace, varname)
 
     @app.callback(
         dash.dependencies.Output('univariate-gelman-rubin', 'children'),
         [dash.dependencies.Input('univariate-selector', 'value')]
     )
     def update_gelman_rubin(varname):
-        return gelman_rubin(trace, varname)
+        return gelman_rubin_p(trace, varname)
 
     @app.callback(
         dash.dependencies.Output('univariate-hist', 'figure'),
