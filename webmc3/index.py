@@ -11,6 +11,23 @@ LOGO = html.Img(
     width=300
 )
 
+HEADER = html.Div([
+    html.Table([
+        html.Tr([
+            html.Td([
+                LOGO,
+            ]),
+            html.Td([
+                dcc.Link("Univariate", href='/univariate'),
+            ]),
+            html.Td([
+                    dcc.Link("Bivariate", href='/bivariate'),
+                ])
+            ]),
+    ]),
+    html.Hr()
+])
+
 
 def add_callbacks(app, trace):
     univariate_layout = univariate.layout(trace)
@@ -29,17 +46,8 @@ def add_callbacks(app, trace):
 
 
 def layout(trace):
-    layout = html.Div([
+    return html.Div([
         dcc.Location(id='url', refresh=False),
-        html.Div([
-            LOGO,
-            html.P([
-                dcc.Link("Univariate", href='/univariate'),
-                dcc.Link("Bivariate", href='/bivariate'),
-            ]),
-            html.Hr()
-        ]),
+        HEADER,
         html.Div(id='page-content')
     ])
-
-    return layout
