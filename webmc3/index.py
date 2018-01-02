@@ -21,8 +21,8 @@ def add_callbacks(app, trace):
     def update_page_content(pathname):
         if pathname in ['/', '/univariate']:
             return univariate_layout
-        elif pathname == '/test':
-            return html.Div([hmtl.H1("TEST")])
+        elif pathname == '/bivariate':
+            return html.Div([html.H1("NOT YET IMPLEMENTED")])
 
     univariate.add_callbacks(app, trace)
 
@@ -30,7 +30,12 @@ def add_callbacks(app, trace):
 def layout(trace):
     layout = html.Div([
         dcc.Location(id='url', refresh=False),
-        html.Div([LOGO, html.Hr()]),
+        html.Div([
+            LOGO,
+            dcc.Link("Univariate", href='/univariate'),
+            dcc.Link("Bivariate", href='/bivariate'),
+            html.Hr()
+        ]),
         html.Div(id='page-content')
     ])
 
