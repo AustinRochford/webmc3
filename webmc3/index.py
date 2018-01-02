@@ -1,4 +1,5 @@
 import dash
+from dash import dependencies as dep
 import dash_core_components as dcc
 import dash_html_components as html
 
@@ -15,8 +16,8 @@ def add_callbacks(app, trace):
     univariate_layout = univariate.layout(trace)
 
     @app.callback(
-        dash.dependencies.Output('page-content', 'children'),
-        [dash.dependencies.Input('url', 'pathname')]
+        dep.Output('page-content', 'children'),
+        [dep.Input('url', 'pathname')]
     )
     def update_page_content(pathname):
         if pathname in ['/', '/univariate']:
@@ -32,8 +33,10 @@ def layout(trace):
         dcc.Location(id='url', refresh=False),
         html.Div([
             LOGO,
-            dcc.Link("Univariate", href='/univariate'),
-            dcc.Link("Bivariate", href='/bivariate'),
+            html.P([
+                dcc.Link("Univariate", href='/univariate'),
+                dcc.Link("Bivariate", href='/bivariate'),
+            ]),
             html.Hr()
         ]),
         html.Div(id='page-content')

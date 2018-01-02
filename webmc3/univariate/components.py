@@ -1,6 +1,7 @@
 from __future__ import division
 
 import dash
+from dash import dependencies as dep
 import dash_core_components as dcc
 import dash_html_components as html
 from plotly import graph_objs as go
@@ -12,36 +13,36 @@ from .stats import *
 
 def add_callbacks(app, trace):
     @app.callback(
-        dash.dependencies.Output('univariate-autocorr', 'figure'),
-        [dash.dependencies.Input('univariate-selector', 'value')]
+        dep.Output('univariate-autocorr', 'figure'),
+        [dep.Input('univariate-selector', 'value')]
     )
     def update_autocorr(varname):
         return autocorr_figure(trace, varname)
 
     @app.callback(
-        dash.dependencies.Output('univariate-effective-n', 'children'),
-        [dash.dependencies.Input('univariate-selector', 'value')]
+        dep.Output('univariate-effective-n', 'children'),
+        [dep.Input('univariate-selector', 'value')]
     )
     def update_effective_n(varname):
         return effective_n_p(trace, varname)
 
     @app.callback(
-        dash.dependencies.Output('univariate-gelman-rubin', 'children'),
-        [dash.dependencies.Input('univariate-selector', 'value')]
+        dep.Output('univariate-gelman-rubin', 'children'),
+        [dep.Input('univariate-selector', 'value')]
     )
     def update_gelman_rubin(varname):
         return gelman_rubin_p(trace, varname)
 
     @app.callback(
-        dash.dependencies.Output('univariate-hist', 'figure'),
-        [dash.dependencies.Input('univariate-selector', 'value')]
+        dep.Output('univariate-hist', 'figure'),
+        [dep.Input('univariate-selector', 'value')]
     )
     def update_hist(varname):
         return hist_figure(trace, varname)
 
     @app.callback(
-        dash.dependencies.Output('univariate-lines', 'figure'),
-        [dash.dependencies.Input('univariate-selector', 'value')]
+        dep.Output('univariate-lines', 'figure'),
+        [dep.Input('univariate-selector', 'value')]
     )
     def update_lines(varname):
         return lines_figure(trace, varname)
