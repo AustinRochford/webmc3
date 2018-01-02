@@ -10,51 +10,51 @@ import numpy as np
 from .stats import *
 
 
-def add_var_callbacks(app, trace):
+def add_callbacks(app, trace):
     @app.callback(
-        dash.dependencies.Output('var-autocorr', 'figure'),
-        [dash.dependencies.Input('var-selector', 'value')]
+        dash.dependencies.Output('univariate-autocorr', 'figure'),
+        [dash.dependencies.Input('univariate-selector', 'value')]
     )
-    def update_var_autocorr(varname):
-        return var_autocorr_figure(trace, varname)
-
-    @app.callback(
-        dash.dependencies.Output('var-effective-n', 'children'),
-        [dash.dependencies.Input('var-selector', 'value')]
-    )
-    def update_var_effective_n(varname):
-        return var_effective_n(trace, varname)
+    def update_autocorr(varname):
+        return autocorr_figure(trace, varname)
 
     @app.callback(
-        dash.dependencies.Output('var-gelman-rubin', 'children'),
-        [dash.dependencies.Input('var-selector', 'value')]
+        dash.dependencies.Output('univariate-effective-n', 'children'),
+        [dash.dependencies.Input('univariate-selector', 'value')]
     )
-    def update_var_gelman_rubin(varname):
-        return var_gelman_rubin(trace, varname)
+    def update_effective_n(varname):
+        return effective_n(trace, varname)
 
     @app.callback(
-        dash.dependencies.Output('var-hist', 'figure'),
-        [dash.dependencies.Input('var-selector', 'value')]
+        dash.dependencies.Output('univariate-gelman-rubin', 'children'),
+        [dash.dependencies.Input('univariate-selector', 'value')]
     )
-    def update_var_hist(varname):
-        return var_hist_figure(trace, varname)
+    def update_gelman_rubin(varname):
+        return gelman_rubin(trace, varname)
 
     @app.callback(
-        dash.dependencies.Output('var-lines', 'figure'),
-        [dash.dependencies.Input('var-selector', 'value')]
+        dash.dependencies.Output('univariate-hist', 'figure'),
+        [dash.dependencies.Input('univariate-selector', 'value')]
     )
-    def update_var_lines(varname):
-        return var_lines_figure(trace, varname)
+    def update_hist(varname):
+        return hist_figure(trace, varname)
+
+    @app.callback(
+        dash.dependencies.Output('univariate-lines', 'figure'),
+        [dash.dependencies.Input('univariate-selector', 'value')]
+    )
+    def update_lines(varname):
+        return lines_figure(trace, varname)
 
 
-def var_autocorr(trace, varname):
+def autocorr_graph(trace, varname):
     return dcc.Graph(
-        id='var-autocorr',
-        figure=var_autocorr_figure(trace, varname)
+        id='univariate-autocorr',
+        figure=autocorr_figure(trace, varname)
     )
 
 
-def var_autocorr_figure(trace, varname):
+def autocorr_figure(trace, varname):
     x = np.arange(len(trace))
 
     return {
@@ -75,7 +75,7 @@ def var_autocorr_figure(trace, varname):
     }
 
 
-def var_effective_n(trace, varname):
+def effective_n_p(trace, varname):
     if trace.nchains > 1:
         try:
             text = "Effective sample size = {}".format(effective_n(trace, varname))
@@ -84,26 +84,26 @@ def var_effective_n(trace, varname):
     else:
         text = "Cannot calculate effective sample size with only one chain"
 
-    return html.P(id='var-effective-n', children=text)
+    return html.P(id='univariate-effective-n', children=text)
     
 
-def var_gelman_rubin(trace, varname):
+def gelman_rubin_p(trace, varname):
     if trace.nchains > 1:
         text = u"Gelman-Rubin R̂ = {:.4f}".format(gelman_rubin(trace, varname))
     else:
         text = "Cannot calculate Gelman-Rubin statistic with only one chain"
 
-    return html.P(id='var-gelman-rubin', children=text) 
+    return html.P(id='univariate-gelman-rubin', children=text) 
 
 
-def var_hist(trace, varname):
+def hist_graph(trace, varname):
     return dcc.Graph(
-        id='var-hist',
-        figure=var_hist_figure(trace, varname)
+        id='univariate-hist',
+        figure=hist_figure(trace, varname)
     )
 
 
-def var_hist_figure(trace, varname):
+def hist_figure(trace, varname):
     return {
         'data': [
             go.Histogram(x=trace[varname])
@@ -114,14 +114,14 @@ def var_hist_figure(trace, varname):
     }
 
 
-def var_lines(trace, varname):
+def lines_graph(trace, varname):
     return dcc.Graph(
-        id='var-lines',
-        figure=var_lines_figure(trace, varname)
+        id='univariate-lines',
+        figure=lines_figure(trace, varname)
     )
 
 
-def var_lines_figure(trace, varname):
+def lines_figure(trace, varname):
     x = np.arange(len(trace))
 
     return {
@@ -141,12 +141,12 @@ def var_lines_figure(trace, varname):
     }
 
 
-def var_selector(trace, varname):
+def selector(trace, varname):
     return html.Div(
         [
             html.Label("Variable"),
             dcc.Dropdown(
-                id='var-selector',
+                id='univariate-selector',
                 value=varname,
                 options=[
                     {
