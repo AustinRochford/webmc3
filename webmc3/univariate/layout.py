@@ -5,15 +5,13 @@ import dash_html_components as html
 from .components import *
 
 
-def layout(app, trace):
+def layout(trace):
     varname = trace.varnames[0]
 
     layout = html.Div([
         selector(trace, varname),
         table(trace, varname)
     ])
-
-    add_callbacks(app, trace)
 
     return layout
 
