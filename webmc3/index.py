@@ -3,7 +3,7 @@ from dash import dependencies as dep
 import dash_core_components as dcc
 import dash_html_components as html
 
-from . import univariate
+from . import bivariate, univariate
 
 
 LOGO = html.Img(
@@ -30,6 +30,7 @@ HEADER = html.Div([
 
 
 def add_callbacks(app, trace):
+    bivariate_layout = bivariate.layout(trace)
     univariate_layout = univariate.layout(trace)
 
     @app.callback(
@@ -40,7 +41,7 @@ def add_callbacks(app, trace):
         if pathname in ['/', '/univariate']:
             return univariate_layout
         elif pathname == '/bivariate':
-            return html.Div([html.H1("NOT YET IMPLEMENTED")])
+            return bivariate_layout
 
     univariate.add_callbacks(app, trace)
 
