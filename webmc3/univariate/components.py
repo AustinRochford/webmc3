@@ -1,6 +1,5 @@
 from __future__ import division
 
-import dash
 from dash import dependencies as dep
 import dash_core_components as dcc
 import dash_html_components as html
@@ -13,6 +12,8 @@ from .stats import *
 
 
 def add_callbacks(app, trace):
+    add_include_transformed_callback(app, 'univariate', trace)
+
     @app.callback(
         dep.Output('univariate-autocorr', 'figure'),
         [dep.Input('univariate-selector', 'value')]
@@ -40,8 +41,6 @@ def add_callbacks(app, trace):
     )
     def update_hist(varname):
         return hist_figure(trace, varname)
-
-    add_include_transformed_callback(app, 'univariate', trace)
 
     @app.callback(
         dep.Output('univariate-lines', 'figure'),

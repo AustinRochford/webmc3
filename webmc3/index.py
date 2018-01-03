@@ -43,6 +43,7 @@ def add_callbacks(app, trace):
         elif pathname == '/bivariate':
             return bivariate_layout
 
+    bivariate.add_callbacks(app, trace)
     univariate.add_callbacks(app, trace)
 
 
