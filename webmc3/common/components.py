@@ -2,7 +2,7 @@ from dash import dependencies as dep
 import dash_core_components as dcc
 import dash_html_components as html
 
-from ..utils import get_varnames
+from ..utils import get_varname_options
 
 
 def add_include_transformed_callback(app, title, trace):
@@ -14,7 +14,7 @@ def add_include_transformed_callback(app, title, trace):
         )]
     )
     def update_selector_transformed(values):
-        return get_varnames(
+        return get_varname_options(
             trace,
             include_transformed=values
         )
@@ -25,7 +25,7 @@ def selector(title, trace, varname, include_transformed_chooser=True):
         html.Label("Variable"),
         dcc.Dropdown(
             id='{}-selector'.format(title),
-            options=get_varnames(trace),
+            options=get_varname_options(trace),
             value=varname
         )
     ]
