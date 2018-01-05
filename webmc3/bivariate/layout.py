@@ -12,14 +12,10 @@ def layout(trace):
 
     layout = html.Div([
         html.Center([
-            html.Table([
-                html.Tr([
-                    html.Td([selector('bivariate-x', trace, x_varname)]),
-                    html.Td([selector('bivariate-y', trace, y_varname)])
-                ])
-            ])
-        ]),
-        scatter_graph(trace, x_varname, y_varname)
+            selector('bivariate-x', trace, x_varname),
+            selector('bivariate-y', trace, y_varname),
+            scatter_graph(trace, x_varname, y_varname)
+        ])
     ])
 
     return layout
