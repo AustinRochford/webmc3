@@ -1,0 +1,6 @@
+pymc3>=3.2
+dash>=0.19
+dash-renderer>=0.11.1
+dash-html-components>=0.8
+dash-core-components>=0.15.2
+plotly>=2.2.3
