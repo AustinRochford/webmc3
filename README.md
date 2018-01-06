@@ -9,7 +9,13 @@ Consult the [quickstart notebook](/docs/notebooks/Quickstart.ipynb) to start usi
 
 The simplest way to develop `webmc3` is to use the [Dockerfile](/Dockerfile).
 
-First build the image.
+First, pull the image from [Docker Hub](https://hub.docker.com/r/austinrochford/webmc3/) with
+
+```bash
+docker pull austinrochford/webmc3
+```
+
+or build the image with
 
 ```bash
 docker build -t webmc3 .
