@@ -8,6 +8,8 @@ from plotly import graph_objs as go
 import numpy as np
 
 from ..common.components import add_include_transformed_callback
+from ..utils import get_values
+from .utils import get_ix_slice
 from .stats import *
 
 
@@ -16,10 +18,15 @@ def add_callbacks(app, trace):
 
     @app.callback(
         dep.Output('univariate-autocorr', 'figure'),
-        [dep.Input('univariate-selector', 'value')]
+        [
+            dep.Input('univariate-selector', 'value'),
+            dep.Input('univariate-lines', 'relayoutData')
+        ]
     )
-    def update_autocorr(varname):
-        return autocorr_figure(trace, varname)
+    def update_autocorr(varname, relayoutData):
+        ix_slice = get_ix_slice(relayoutData)
+
+        return autocorr_figure(trace, varname, ix_slice=ix_slice)
 
     @app.callback(
         dep.Output('univariate-effective-n', 'children'),
@@ -37,10 +44,15 @@ def add_callbacks(app, trace):
 
     @app.callback(
         dep.Output('univariate-hist', 'figure'),
-        [dep.Input('univariate-selector', 'value')]
+        [
+            dep.Input('univariate-selector', 'value'),
+            dep.Input('univariate-lines', 'relayoutData')
+        ]
     )
-    def update_hist(varname):
-        return hist_figure(trace, varname)
+    def update_hist(varname, relayoutData):
+        ix_slice = get_ix_slice(relayoutData)
+
+        return hist_figure(trace, varname, ix_slice=ix_slice)
 
     @app.callback(
         dep.Output('univariate-lines', 'figure'),
@@ -57,8 +69,13 @@ def autocorr_graph(trace, varname):
     )
 
 
-def autocorr_figure(trace, varname):
-    x = np.arange(len(trace))
+def autocorr_figure(trace, varname, ix_slice=None):
+    if ix_slice is None:
+        x_len = len(trace)
+    else:
+        x_len = ix_slice.stop - ix_slice.start
+
+    x = np.arange(x_len)
 
     return {
         'data': [
@@ -68,7 +85,9 @@ def autocorr_figure(trace, varname):
                 name="Chain {}".format(chain_ix),
                 marker={'line': {'width': 1. / trace.nchains}}
             )
-            for chain_ix, chain_autocorr in enumerate(autocorr(trace, varname))
+            for chain_ix, chain_autocorr in enumerate(
+                autocorr(trace, varname, ix_slice=ix_slice)
+            )
         ],
         'layout': go.Layout(
             xaxis={'title': "Lag"},
@@ -106,10 +125,10 @@ def hist_graph(trace, varname):
     )
 
 
-def hist_figure(trace, varname):
+def hist_figure(trace, varname, ix_slice=None):
     return {
         'data': [
-            go.Histogram(x=trace[varname])
+            go.Histogram(x=get_values(trace, varname, ix_slice=ix_slice))
         ],
         'layout': go.Layout(
             yaxis={'title': "Frequency"}
