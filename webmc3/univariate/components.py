@@ -1,5 +1,7 @@
 from __future__ import division
 
+from math import ceil, floor
+
 from dash import dependencies as dep
 import dash_core_components as dcc
 import dash_html_components as html
@@ -8,6 +10,7 @@ from plotly import graph_objs as go
 import numpy as np
 
 from ..common.components import add_include_transformed_callback
+from ..utils import get_values
 from .stats import *
 
 
@@ -37,10 +40,24 @@ def add_callbacks(app, trace):
 
     @app.callback(
         dep.Output('univariate-hist', 'figure'),
-        [dep.Input('univariate-selector', 'value')]
+        [
+            dep.Input('univariate-selector', 'value'),
+            dep.Input('univariate-lines', 'relayoutData')
+        ]
     )
-    def update_hist(varname):
-        return hist_figure(trace, varname)
+    def update_hist(varname, relayoutData):
+        if relayoutData is None:
+            ix_slice = None
+        else:
+            try:
+                ix_slice = slice(
+                    floor(relayoutData['xaxis.range[0]']),
+                    ceil(relayoutData['xaxis.range[1]'])
+                )
+            except KeyError:
+                ix_slice = None
+
+        return hist_figure(trace, varname, ix_slice=ix_slice)
 
     @app.callback(
         dep.Output('univariate-lines', 'figure'),
@@ -106,10 +123,10 @@ def hist_graph(trace, varname):
     )
 
 
-def hist_figure(trace, varname):
+def hist_figure(trace, varname, ix_slice=None):
     return {
         'data': [
-            go.Histogram(x=trace[varname])
+            go.Histogram(x=get_values(trace, varname, ix_slice=ix_slice))
         ],
         'layout': go.Layout(
             yaxis={'title': "Frequency"}
