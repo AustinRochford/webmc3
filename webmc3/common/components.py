@@ -2,8 +2,6 @@ from dash import dependencies as dep
 import dash_core_components as dcc
 import dash_html_components as html
 
-from ..utils import get_varname_options
-
 
 def add_include_transformed_callback(app, title, trace):
     @app.callback(
@@ -18,6 +16,18 @@ def add_include_transformed_callback(app, title, trace):
             trace,
             include_transformed=values
         )
+
+
+def get_varname_options(trace_info, include_transformed=False):
+    return [
+        {
+            'label': varname,
+            'value': varname
+        }
+        for varname in trace_info.get_varnames(
+            include_transformed=include_transformed
+        )
+    ]
 
 
 def selector(title, trace, varname, include_transformed_chooser=True):

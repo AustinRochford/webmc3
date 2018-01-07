@@ -5,9 +5,9 @@ from plotly import graph_objs as go
 from ..common.components import add_include_transformed_callback
 
 
-def add_callbacks(app, trace):
-    add_include_transformed_callback(app, 'bivariate-x', trace)
-    add_include_transformed_callback(app, 'bivariate-y', trace)
+def add_callbacks(app, trace_info):
+    add_include_transformed_callback(app, 'bivariate-x', trace_info)
+    add_include_transformed_callback(app, 'bivariate-y', trace_info)
 
     @app.callback(
         dep.Output('bivariate-scatter', 'figure'),
@@ -17,15 +17,15 @@ def add_callbacks(app, trace):
         ]
     )
     def update_bivariate_scatter(x_varname, y_varname):
-        return scatter_figure(trace, x_varname, y_varname)
+        return scatter_figure(trace_info, x_varname, y_varname)
 
 
-def scatter_figure(trace, x_varname, y_varname):
+def scatter_figure(trace_info, x_varname, y_varname):
     return {
         'data': [
             go.Scatter(
-                x=trace[x_varname],
-                y=trace[y_varname],
+                x=trace_info.get_values(x_varname),
+                y=trace_info.get_values(y_varname),
                 mode='markers'
             )
         ],
@@ -36,8 +36,8 @@ def scatter_figure(trace, x_varname, y_varname):
     }
 
 
-def scatter_graph(trace, x_varname, y_varname):
+def scatter_graph(trace_info, x_varname, y_varname):
     return dcc.Graph(
         id='bivariate-scatter',
-        figure=scatter_figure(trace, x_varname, y_varname)
+        figure=scatter_figure(trace_info, x_varname, y_varname)
     )
