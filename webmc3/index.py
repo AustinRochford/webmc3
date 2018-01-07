@@ -29,9 +29,16 @@ HEADER = html.Div([
 ])
 
 
-def add_callbacks(app, trace):
-    bivariate_layout = bivariate.layout(trace)
-    univariate_layout = univariate.layout(trace)
+LAYOUT = html.Div([
+    dcc.Location(id='url', refresh=False),
+    HEADER,
+    html.Div(id='page-content')
+])
+
+
+def add_callbacks(app, trace_info):
+    bivariate_layout = bivariate.layout(trace_info)
+    univariate_layout = univariate.layout(trace_info)
 
     @app.callback(
         dep.Output('page-content', 'children'),
@@ -43,13 +50,5 @@ def add_callbacks(app, trace):
         elif pathname == '/bivariate':
             return bivariate_layout
 
-    bivariate.add_callbacks(app, trace)
-    univariate.add_callbacks(app, trace)
-
-
-def layout(trace):
-    return html.Div([
-        dcc.Location(id='url', refresh=False),
-        HEADER,
-        html.Div(id='page-content')
-    ])
+    bivariate.add_callbacks(app, trace_info)
+    univariate.add_callbacks(app, trace_info)

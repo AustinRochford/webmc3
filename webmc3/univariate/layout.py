@@ -6,17 +6,17 @@ from ..common.components import selector
 from .components import *
 
 
-def layout(trace):
-    varname = trace.varnames[0]
+def layout(trace_info):
+    varname = trace_info.get_varnames()[0]
 
     layout = html.Div([
         html.Center([
-            selector('univariate', trace, varname),
-            gelman_rubin_p(trace, varname),
-            effective_n_p(trace, varname),
-            hist_graph(trace, varname),
-            lines_graph(trace, varname),
-            autocorr_graph(trace, varname)
+            selector('univariate', trace_info, varname),
+            gelman_rubin_p(trace_info, varname),
+            effective_n_p(trace_info, varname),
+            hist_graph(trace_info, varname),
+            lines_graph(trace_info, varname),
+            autocorr_graph(trace_info, varname)
         ])
     ])
 
