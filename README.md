@@ -1,7 +1,7 @@
 # webmc3
 A web interface for exploring [PyMC3](https://github.com/pymc-devs/pymc3) traces, inspired by [ShinyStan](https://github.com/stan-dev/shinystan) and built with [Dash](https://github.com/plotly/dash).
 
-![webmc3 demo](https://media.giphy.com/media/3ohc18OfTZ2poulJII/giphy.gif)
+![webmc3 demo](https://media.giphy.com/media/3oFzmg4wfP0aiqNcLm/giphy.gif)
 
 Consult the [quickstart notebook](/docs/notebooks/Quickstart.ipynb) to start using `webmc3`.
 
