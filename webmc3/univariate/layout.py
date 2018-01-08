@@ -1,5 +1,3 @@
-from decorator import decorator
-
 import dash_html_components as html
 
 from ..common.components import selector
