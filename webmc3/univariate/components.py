@@ -8,7 +8,7 @@ from plotly import graph_objs as go
 import numpy as np
 
 from ..common.components import add_include_transformed_callback
-from .utils import get_ix_slice
+from webmc3.utils import get_ix_slice
 
 
 def add_callbacks(app, trace_info):

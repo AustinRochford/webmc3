@@ -1,6 +1,6 @@
 import numpy as np
 import pymc3 as pm
-
+from webmc3.utils import autocorr
 
 class TraceInfo:
     def __init__(self, trace):
@@ -15,15 +15,11 @@ class TraceInfo:
         return len(self._trace)
 
     def autocorr(self, varname, ix_slice=None, max_lag=100):
-        return np.array([
-            [
-                pm.autocorr(chain_samples, lag)
-                for lag in range(1, min(max_lag + 1, chain_samples.size))
-            ]
-            for chain_samples in self.get_values(
-                varname, combine=False, ix_slice=ix_slice
-            )
-        ])
+        chain_values = self.get_values(varname, combine=False, ix_slice=ix_slice)
+        if len(chain_values) > 1:
+            return np.array([autocorr(x)[:min(max_lag, len(x))] for x in chain_values])
+        else:
+            return autocorr(chain_values)[:min(max_lag, len(chain_values))]
 
     def get_values(self, varname, combine=True, ix_slice=None):
         if ix_slice is None:
